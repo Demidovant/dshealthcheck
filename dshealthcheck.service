@@ -1,0 +1,17 @@
+[root@yac-vl-00258 ~]# cat /etc/systemd/system/dshealthcheck.service
+[Unit]
+Description=DS389 healthcheck service. Response 200 if DS OK. Try curl http://hostname:8080/dshealthcheck
+After=multi-user.target
+
+[Service]
+User=root
+Group=root
+Type=simple
+Restart=always
+RestartSec=15
+ExecStartPre=mkdir -p /var/log/dshealthcheck && chown root:root /var/log/dshealthcheck && "chmod -R 755 /var/log/dshealthcheck"
+ExecStartPre=echo "Starting dshealthcheck"
+ExecStart=socat TCP4-LISTEN:8080,fork EXEC:/etc/dshealthcheck/dshealthcheck.sh
+
+[Install]
+WantedBy=multi-user.target

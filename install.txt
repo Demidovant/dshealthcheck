@@ -1,0 +1,25 @@
+# mkdir -p /var/log/dshealthcheck && chown root:root /var/log/dshealthcheck && "chmod -R 755 /var/log/dshealthcheck"
+
+
+mkdir -p /etc/dshealthcheck && chown root:root /etc/dshealthcheck && "chmod -R 755 /etc/dshealthcheck"
+nano /etc/dshealthcheck/dshealthcheck.sh
+nano /etc/systemd/system/dshealthcheck.service
+daemon-reload
+systemctl start dshealthcheck.service
+systemctl enable dshealthcheck.service
+systemctl status dshealthcheck.service
+
+
+
+
+nano /etc/logrotate.d/dshealthcheck
+
+
+/var/log/dshealthcheck/dshealthcheck.log {
+  daily
+  missingok
+  rotate 7
+  compress
+  notifempty
+  copytruncate
+}
